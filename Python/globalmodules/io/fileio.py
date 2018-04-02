@@ -2,6 +2,9 @@ import pandas as pd
 from globalmodules.log.loghelper import log_action
 
 class FileIO(object):
+    """
+    File interface
+    """
 
     @log_action
     def __init__(self, strfilelocation):
@@ -20,6 +23,9 @@ class FileIO(object):
 
 
 class DelimitedFileIO(FileIO):
+    """
+    Delimited implementation.
+    """
     @log_action
     def __init__(self, strfilelocation):
         self.strfilelocation=strfilelocation

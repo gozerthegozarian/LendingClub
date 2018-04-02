@@ -34,6 +34,9 @@ def bootstrap_config(strconfigpath):
     return config
 
 def setup_local_logging(logger, strappname):
+    """
+    Sets up a file if there is not one.
+    """
     if logger.hasHandlers():
         pass
     else:

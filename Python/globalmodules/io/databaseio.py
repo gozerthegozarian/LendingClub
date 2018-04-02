@@ -38,6 +38,9 @@ class MSSQLServerDatabase(AbstractDatabase):
         self.connection = pyodbc.connect(strdriver+strserver+strdb+strtrust)
 
     def bulk_insert(self, strtablename):
+        """
+        Use file system for fast loading.
+        """
         cur = self.connection.cursor()
         dbcmd = "insert command here"
         try:
