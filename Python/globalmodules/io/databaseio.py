@@ -37,16 +37,19 @@ class MSSQLServerDatabase(AbstractDatabase):
         strtrust="Trusted_Connection=yes;"
         self.connection = pyodbc.connect(strdriver+strserver+strdb+strtrust)
 
-    def bulk_insert(self, strtablename):
+    def bulk_insert(self, strtablename, strfilepath, filedelimeter, rowterminator):
         """
         Use file system for fast loading.
         """
         cur = self.connection.cursor()
-        dbcmd = "insert command here"
+        dbcmd = "BULK INSERT {} FROM '{}' WITH ( FIELDTERMINATOR ='{}', ROWTERMINATOR ='{}' );".format(strtablename, strfilepath, filedelimeter,rowterminator)
         try:
+            print(dbcmd)
             response = cur.execute(dbcmd)
+            return response
         except IOError:
             raise
+
 
 
     def run_stored_procedure(self, strspname):

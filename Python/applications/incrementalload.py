@@ -8,6 +8,7 @@ from globalmodules.io.fileio import DelimitedFileIO
 def run(config):
 
     sourcedir=config['application']['sourcedir']
+
     while True:
         if not os.listdir(sourcedir):
             sleep(60)
