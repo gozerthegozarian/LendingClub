@@ -1,6 +1,6 @@
 import pandas as pd
-from globalmodules.log.loghelper import log_action
 import csv
+from globalmodules.log.loghelper import log_action
 
 class FileIO(object):
     """
@@ -19,7 +19,12 @@ class FileIO(object):
     def write_from_dataframe(self):
         pass
 
-    def write_file(self):
+    @log_action
+    def write_file_to_standard(self):
+        pass
+
+    @log_action
+    def read_file(self):
         pass
 
 
@@ -32,7 +37,7 @@ class DelimitedFileIO(FileIO):
         self.strfilelocation=strfilelocation
         if delimter is None:
             try:
-                with open('C:/Users/frede/Downloads/loan.csv/loan.csv', newline='') as f:
+                with open('C:/Users/frede/Downloads/loan.csv/loan.csv', newline='', encoding='utf-8') as f:
                     dialect = csv.Sniffer().sniff(f.read(10 * 1024))
                     self.delimter =dialect.delimiter
             except:
@@ -54,3 +59,18 @@ class DelimitedFileIO(FileIO):
         except IOError:
             raise
         return df
+
+    @log_action
+    def read_file(self):
+        contents=[]
+        with open(self.strfilelocation, newline='', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                contents.append(row)
+        return iter(contents), len(contents)
+
+    @log_action
+    def write_file_to_standard(self, readerobj, header=True, delimiter='|'):
+        with open(self.strfilelocation, 'w', newline='', encoding='utf-8') as target:
+            writer = csv.writer(target, delimiter=delimiter)
+            writer.writerows(readerobj)

@@ -1,0 +1,22 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Fred
+-- Create date: 4/6
+-- Description:	Compares staging to production table.  Inserts delta.  Updates existing.
+-- =============================================
+CREATE PROCEDURE [stg].[truncate_loans]
+	-- Add the parameters for the stored procedure here
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	TRUNCATE TABLE stg.loans
+END
+GO

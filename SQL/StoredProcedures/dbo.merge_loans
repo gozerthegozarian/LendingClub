@@ -175,8 +175,8 @@ WHEN NOT MATCHED BY TARGET
       ,SOURCE.inq_last_12m
 	)
 WHEN MATCHED
-    THEN UPDATE SET TARGET.id=SOURCE.id
-      ,TARGET.member_id=SOURCE.member_id
+    THEN UPDATE SET
+       TARGET.member_id=SOURCE.member_id
       ,TARGET.loan_amnt=SOURCE.loan_amnt
       ,TARGET.funded_amnt=SOURCE.funded_amnt
       ,TARGET.funded_amnt_inv=SOURCE.funded_amnt_inv

@@ -7,5 +7,3 @@ def basic_profile(targetdf):
     Profile data
     """
     pass
-
-

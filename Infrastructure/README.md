@@ -1,0 +1,1 @@
+dataProcessingDirectory contains folders used in flat file processing.  Does not have to be same directory as where the code is running.
