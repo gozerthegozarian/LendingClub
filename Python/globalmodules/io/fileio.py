@@ -1,5 +1,7 @@
 import pandas as pd
 import csv
+import shutil
+import os
 from globalmodules.log.loghelper import log_action
 
 class FileIO(object):
@@ -10,6 +12,7 @@ class FileIO(object):
     @log_action
     def __init__(self, strfilelocation):
         self.strfilelocation=strfilelocation
+        self.strfilename=os.path.basename(strfilelocation)
 
     @log_action
     def read_to_dataframe(self):
@@ -20,24 +23,31 @@ class FileIO(object):
         pass
 
     @log_action
-    def write_file_to_standard(self):
-        pass
+    def write_file_to_standard(self, data):
+        with open(self.strfilelocation, newline='', encoding='utf-8') as f:
+            f.write(data)
 
     @log_action
     def read_file(self):
         pass
+
+    @log_action
+    def move_file(self, strdestinationdir):
+        shutil.move(self.strfilelocation, strdestinationdir+'/'+self.strfilename)
 
 
 class DelimitedFileIO(FileIO):
     """
     Delimited implementation.
     """
+
     @log_action
     def __init__(self, strfilelocation, delimter=None):
         self.strfilelocation=strfilelocation
+        self.strfilename = os.path.basename(strfilelocation)
         if delimter is None:
             try:
-                with open('C:/Users/frede/Downloads/loan.csv/loan.csv', newline='', encoding='utf-8') as f:
+                with open(strfilelocation, newline='', encoding='utf-8') as f:
                     dialect = csv.Sniffer().sniff(f.read(10 * 1024))
                     self.delimter =dialect.delimiter
             except:
@@ -74,3 +84,7 @@ class DelimitedFileIO(FileIO):
         with open(self.strfilelocation, 'w', newline='', encoding='utf-8') as target:
             writer = csv.writer(target, delimiter=delimiter)
             writer.writerows(readerobj)
+
+    @log_action
+    def move_file(self, strdestinationdir):
+        super().move_file(strdestinationdir)

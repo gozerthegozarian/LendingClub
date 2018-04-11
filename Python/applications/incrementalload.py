@@ -1,6 +1,5 @@
 import os
 import configparser
-import csv
 from time import sleep
 from globalmodules.io.fileio import DelimitedFileIO
 from globalmodules.io.databaseio import MSSQLServerDatabase
@@ -12,6 +11,7 @@ def run(config):
 
     sourcedir=config['application']['sourcedir']
     processingdir = config['application']['processingdir']
+    sucessdir = config['application']['successdir']
     dbserver=config['application']['dbaddress']
     dbname=config['application']['dbname']
     targettable = config['application']['targettable']
@@ -23,16 +23,17 @@ def run(config):
             print('empty')
         else:
             for each in os.listdir(sourcedir):
-                targetfile = sourcedir+"/"+each
-                targetdata = DelimitedFileIO(targetfile)
+                strtargetfilepath = sourcedir+"/"+each
+                targetfile = DelimitedFileIO(strtargetfilepath)
                 targetdb = MSSQLServerDatabase(dbserver, dbname)
-                data, size = targetdata.read_file()
+                data, size = targetfile.read_file()
                 ##Gather total number of rows
                 rowcount = size-1
                 batchcount = int(rowcount / intbatchsize)
                 header = data.__next__()
 
                 ##Test header
+
                 if bool_headers_match(SchemaLendingClub.columnheaders, header):
                     ##Reformat to increase performance and avoid bulk insert problems.
                     for each in range(0, batchcount + 1):
@@ -54,17 +55,16 @@ def run(config):
                     ##Truncate staging
                         targetdb.run_stored_procedure('stg.truncate_loans')
                     ##remove source file at end of loop
+                        destinationfile.move_file(sucessdir)
                     ##End Processing routine
                 else:
                     exit(-1)
-        break
+                ##Remove core file
+                targetfile.move_file(sucessdir)
 
 if __name__ == "__main__":
-    import timeit
-    start_time = timeit.default_timer()
     config=configparser.ConfigParser()
     config.read('config.ini')
     run(config)
-    print(timeit.default_timer() - start_time)
 
 

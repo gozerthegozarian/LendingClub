@@ -81,7 +81,7 @@ class MSSQLServerDatabase(AbstractDatabase):
 
     @log_action
     def read_to_datafame(self, query):
-        df = pandas.read_sql(query,coerce_float=self.connection)
+        df = pandas.read_sql(query,con=self.connection)
         return df
 
     @log_action
