@@ -75,4 +75,6 @@ SELECT [id]
       ,TRY_CAST([total_cu_tl] AS FLOAT) AS [total_cu_tl]
       ,TRY_CAST([inq_last_12m] AS FLOAT) AS [inq_last_12m]
 FROM  stg.loans
+
 GO
+

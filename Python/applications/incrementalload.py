@@ -17,6 +17,7 @@ def run(config):
     targettable = config['application']['targettable']
     intbatchsize = int(config['application']['batchsize'])
 
+##Look to multithread in the future to increase performance.
     while True:
         if not os.listdir(sourcedir):
             sleep(60)
@@ -31,12 +32,10 @@ def run(config):
                 rowcount = size-1
                 batchcount = int(rowcount / intbatchsize)
                 header = data.__next__()
-
                 ##Test header
-
                 if bool_headers_match(SchemaLendingClub.columnheaders, header):
                     ##Reformat to increase performance and avoid bulk insert problems.
-                    for each in range(0, batchcount + 1):
+                    for each in range(0, batchcount+1):
                         inner = []
                         for row in data:
                             print(len(inner))
@@ -66,5 +65,3 @@ if __name__ == "__main__":
     config=configparser.ConfigParser()
     config.read('config.ini')
     run(config)
-
-
